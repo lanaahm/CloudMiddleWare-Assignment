@@ -1,38 +1,40 @@
 from airflow.models.dag import DAG
 from airflow.operators.python_operator import PythonOperator
-from airflow.operators.bash import BashOperator
 from airflow.operators.dummy import DummyOperator
 from airflow.utils.dates import days_ago
 from airflow.utils.task_group import TaskGroup
 
-from extract import main as MainExtract
-
+from extract import main as main_extract
+from utils.init_table import main as init_transfrom
+from transform import transfrom_customer
+from transform import transfrom_product
+from transform import transfrom_transaction
+from load import main as loads
 # [START]
 with DAG(dag_id="ETL-Airflow", start_date=days_ago(2), tags=["ETL"]) as dag:
     start = DummyOperator(task_id="start")
 
-    # [START task_group_extract]
+    # [START task_extract]
     with TaskGroup("extract", tooltip="Tasks for extract") as extract_process:
-        task_1 = PythonOperator(task_id="extract_zipfile", python_callable=MainExtract)
+        task_1 = PythonOperator(task_id="extract_zipfile", python_callable=main_extract)
         task_1
-    # [END task_group_extract]
+    # [END task_extract]
 
-    # [START task_group_transfrom]
+    # [START task_transfrom]
     with TaskGroup("transfrom", tooltip="Tasks for transfrom") as transfrom:
-        task_1 = DummyOperator(task_id="task_1")
+        task_0 = PythonOperator(task_id="init_transfrom", python_callable=init_transfrom)
+        task_1 = PythonOperator(task_id="transfrom_customer", python_callable=transfrom_customer)
+        task_2 = PythonOperator(task_id="transfrom_product", python_callable=transfrom_product)
+        task_3 = PythonOperator(task_id="transfrom_transaction", python_callable=transfrom_transaction)
+        task_0 >> [task_1, task_2, task_3]
+    # [END task_transfrom]
 
-        # [START task_group_inner_transfrom]
-        with TaskGroup("inner_transfrom", tooltip="Tasks for inner_section2") as inner_transfrom:
-            task_2 = BashOperator(task_id="task_2", bash_command='echo 1')
-            task_3 = DummyOperator(task_id="task_3")
-            task_4 = DummyOperator(task_id="task_4")
+    # [START task_extract]
+    with TaskGroup("load", tooltip="Tasks for load") as load_process:
+        task_1 = PythonOperator(task_id="load_allDataTransfrom_toCleanTables", python_callable=loads)
+        task_1
+    # [END task_extract]
 
-            [task_2, task_3] >> task_4
-        # [END task_group_inner_transfrom]
-
-    # [END task_group_transfrom]
-    
     end = DummyOperator(task_id='end')
-    
-    start >> extract_process >> transfrom >> end
+    start >> extract_process >> transfrom >> load_process >> end
 # [END]

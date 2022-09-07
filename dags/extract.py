@@ -35,8 +35,6 @@ def extract_new_raw_data():
                     reader = csv.DictReader(csv_file)
                     row = next(reader)  # Get first row from reader
                     print("[Extract] First row example:", row)
-                    print("[Extract] First row example:", filelist)
-
                     # Open the CSV file in write mode
                     with open(
                         raw_path+filelist,
@@ -46,8 +44,10 @@ def extract_new_raw_data():
                         # Rename field names so they're ready for the next step
                         fieldnames = {k: re.sub("\(.*?\)|[^a-zA-Z_]","", k).lower() for k in row}
                         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+                        filerow = {k: v for k,v in row.items()}
                         # Write headers as first line
                         writer.writerow(fieldnames)
+                        writer.writerow(filerow)
                         for row in reader:
                             # Write all rows in file
                             writer.writerow(row)
