@@ -2,6 +2,7 @@
 */*/__pycache__
 
 /logs/*
-!/logs/*.jpg
+!/logs/images
+!/logs/*.md
 
 *.csv

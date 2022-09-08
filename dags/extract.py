@@ -18,7 +18,7 @@ def create_folder_if_not_exists(path):
 
 def extract_new_raw_data():
     """
-    Extract new raw data from the current source from the source
+    Extract new raw data from the current source
     """
 
     create_folder_if_not_exists(raw_path)

@@ -37,15 +37,14 @@ def update_date(date_input):
 def update_class(class_input):
     """
     Simplify the ship_mode field for potentialy future analysis, just return:
-    - "Second" if string contains "Second class" substring
-    - etc.
+    - "Second" if string contains "Second class" substring etc.
     """
     class_input = transform_case(class_input)
     return class_input.replace("class", "").strip()
 
 def update_number(price_input, decimal=False, discount=False):
     """
-    Return number as integer:
+    Return number as integer or float:
     - "," to convert the number into float first (e.g. from "100,000.00" to "100000.00")
     """
     price_input = float(price_input.replace(",", ""))

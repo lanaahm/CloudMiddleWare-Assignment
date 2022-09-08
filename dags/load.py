@@ -13,9 +13,6 @@ def insert_customer_transactions():
     """
     # Retrieve all the ids from the clean table
     clean_transaction_ids = session.query(CustomerClean.transaction_id)
-
-    # date and price needs to be casted as their
-    # datatype is not string but, respectively, Date and Integer
     transactions_to_insert = session.query(
         CustomerRaw.customer_id,
         CustomerRaw.city,
@@ -46,9 +43,6 @@ def insert_product_transactions():
     """
     # Retrieve all the ids from the clean table
     clean_transaction_ids = session.query(ProductClean.transaction_id)
-
-    # date and price needs to be casted as their
-    # datatype is not string but, respectively, Date and Integer
     transactions_to_insert = session.query(
         ProductRaw.product_id,
         ProductRaw.product_name,
@@ -75,9 +69,6 @@ def insert_transcation_transactions():
     """
     # Retrieve all the ids from the clean table
     clean_transaction_ids = session.query(TranscationClean.transaction_id)
-
-    # date and price needs to be casted as their
-    # datatype is not string but, respectively, Date and Integer
     transactions_to_insert = session.query(
         TranscationRaw.order_id,
         TranscationRaw.customer_id,
@@ -111,8 +102,7 @@ def delete_transactions(ObjectRaw, ObjectClean):
     # Get all transaction ids
     raw_transaction_ids = session.query(ObjectRaw.transaction_id)
 
-    # Filter all the table transactions that are not present in the table
-    # and delete them.
+    # Filter all the table transactions that are not present in the table and delete them.
     # Passing synchronize_session as argument for the delete method.
     transactions_to_delete = session.query(ObjectClean).filter(
         ~ObjectClean.transaction_id.in_(raw_transaction_ids)
