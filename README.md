@@ -43,7 +43,7 @@ Advantages of Apache Airflow
 
 Disadvantages of Apache Airflow
 
-- If we want to change the schedule, we have to change the GAD because the processes from the previous task will not match the new schedule.
+- If we want to change the schedule, we have to change the DAG because the processes from the previous task will not match the new schedule.
 - If we deploy Airflow on a docker container when restarting, it will kill all current processes.
 - It's not easy to run Airflow natively on windows.
 
