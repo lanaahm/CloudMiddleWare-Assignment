@@ -5,11 +5,11 @@
 ETL is a process that consists of Extract, Transform, and Load. ETL is the process of retrieving data from one or many sources. The data will be cleaned before being stored on new storage ready for analysis.
 This project will implement a simple ETL process from data sources. The following is a description of the data source consisting of several CSV files.
 
-| File                       | Description                 |
-| -------------------------- | --------------------------- |
-| final_superstore.csv       | contain order information   |
-| Customer_ID_Superstore.csv | contain Customerinformation |
-| Product_ID_Superstore.csv  | contain product information |
+| File                       | Description                  |
+| -------------------------- | ---------------------------- |
+| final_superstore.csv       | contain order information    |
+| Customer_ID_Superstore.csv | contain Customer information |
+| Product_ID_Superstore.csv  | contain product information  |
 
 ---
 
